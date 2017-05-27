@@ -1,0 +1,19 @@
+language: cpp
+
+before_install:
+  - svn export https://github.com/google/googletest/tags/release-1.8.0 gtest-1.8.0
+  - cd gtest-1.8.0/
+  - ./configure --prefix=$TRAVIS_BUILD_DIR --with-pthreads=no
+  - make
+  - mkdir $TRAVIS_BUILD_DIR/include/
+  - cp -r include/gtest $TRAVIS_BUILD_DIR/include
+  - mkdir $TRAVIS_BUILD_DIR/lib/
+  - cp lib/.libs/* $TRAVIS_BUILD_DIR/lib/
+  - cd ..
+  - export CPLUS_INCLUDE_PATH=$TRAVIS_BUILD_DIR/include:$CPLUS_INCLUDE_PATH
+  - export LIBRARY_PATH=$TRAVIS_BUILD_DIR/lib:$LIBRARY_PATH
+  - export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/lib:$LD_LIBRARY_PATH
+  - cd cpp
+
+script:
+  - make googletest
